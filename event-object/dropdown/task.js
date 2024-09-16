@@ -1,23 +1,32 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const dropdowns = document.querySelectorAll('.dropdown');
 
     dropdowns.forEach(dropdown => {
-        const valueElement = dropdown.querySelector('.dropdown__value');
-        const listElement = dropdown.querySelector('.dropdown__list');
+        const dropdownValue = dropdown.querySelector('.dropdown__value');
+        const dropdownList = dropdown.querySelector('.dropdown__list');
+        const dropdownLinks = dropdown.querySelectorAll('.dropdown__link');
 
-        valueElement.addEventListener('click', function() {
-            listElement.classList.toggle('dropdown__list_active');
+        dropdownValue.addEventListener('click', (event) => {
+            event.preventDefault();
+            dropdownList.classList.toggle('dropdown__list_active');
         });
 
-        const items = listElement.querySelectorAll('.dropdown__item');
-        items.forEach(item => {
-            item.addEventListener('click', function(event) {
-                event.preventDefault();
-                const selectedValue = item.textContent.trim();
-                valueElement.textContent = selectedValue;
-                listElement.classList.remove('dropdown__list_active');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();  
+                dropdownValue.textContent = link.textContent;  
+                dropdownList.classList.remove('dropdown__list_active');
             });
         });
     });
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.dropdown')) {
+            dropdowns.forEach(dropdown => {
+                const dropdownList = dropdown.querySelector('.dropdown__list');
+                dropdownList.classList.remove('dropdown__list_active');
+            });
+        }
+    });
 });
+
 
